@@ -1,0 +1,11 @@
+{
+  "comment": {
+    "body": "This function is missing error handling. Please add try-catch block to handle potential fetch failures.",
+    "path": "src/utils/api.ts",
+    "line": 42,
+    "author": "senior-reviewer"
+  },
+  "diff": "@@ -38,10 +38,15 @@ export async function fetchData(url: string): Promise<Data> {\n-  const response = await fetch(url);\n-  const data = await response.json();\n-  return data;\n+  const response = await fetch(url);\n+  if (!response.ok) {\n+    throw new Error(`HTTP error: ${response.status}`);\n+  }\n+  const data = await response.json();\n+  return data;\n }\n\n async function postData(url: string, body: object) {\n-  const response = await fetch(url, {\n+  const response = await fetch(url, {\n     method: 'POST',\n     headers: { 'Content-Type': 'application/json' },\n     body: JSON.stringify(body)\n   });\n-  return response.json();\n+  if (!response.ok) {\n+    throw new Error(`HTTP error: ${response.status}`);\n+  }\n+  return response.json();\n }",
+  "prNumber": 128,
+  "repo": "myorg/my-api-project"
+}
